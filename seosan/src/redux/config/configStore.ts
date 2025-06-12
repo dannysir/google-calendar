@@ -1,11 +1,12 @@
-import { createStore } from "redux";
-import { combineReducers } from "redux";
-import calendarReducer from '../modules/selectDate.ts'
-import modalReducer from '../modules/modal.ts'
+import { configureStore } from "@reduxjs/toolkit";
+import calendarReducer from '../modules/selectDate';
+import modalReducer from '../modules/modal';
 
-const rootReducer = combineReducers({
-    calendar: calendarReducer,
-    modal: modalReducer,
+export const store = configureStore({
+    reducer: {
+        calendar: calendarReducer,
+        modal: modalReducer,
+    },
 });
-export type RootState = ReturnType<typeof rootReducer>;
-export const store = createStore(rootReducer);
+
+export type RootState = ReturnType<typeof store.getState>;

@@ -6,22 +6,25 @@ import { setSelectedDate } from "../../redux/modules/selectDate.ts";
 import { ko } from "react-day-picker/locale";
 
 export function MyDatePicker() {
-    const selected = useSelector((state: RootState) => state.calendar.selectedDate);
+    const selectedDateString = useSelector((state: RootState) => state.calendar.selectedDate);
+    const selectedDate = new Date(selectedDateString);
     const dispatch = useDispatch();
 
     const handleSelect = (date: Date | undefined) => {
-        dispatch(setSelectedDate(date));
+        if (date) {
+            dispatch(setSelectedDate(date.toISOString()));
+        }
     };
-    console.log(selected);
+
     return (
         <DayPicker
             animate
             mode="single"
-            selected={selected}
+            selected={selectedDate}
             onSelect={handleSelect}
             locale={ko}
             footer={
-                selected ? `Selected: ${selected.toLocaleDateString()}` : "Pick a day."
+                selectedDate ? `Selected: ${selectedDate.toLocaleDateString()}` : "Pick a day."
             }
             formatters={{
                 formatCaption: (date) => `${date.getFullYear()}년 ${date.getMonth() + 1}월`

@@ -3,7 +3,8 @@ import type {RootState} from "../../redux/config/configStore.ts";
 import {Bars3Icon, ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/outline";
 
 export const Header = () => {
-    const {selectedDate} = useSelector((state: RootState) => state.calendar);
+    const selectedDateString = useSelector((state: RootState) => state.calendar.selectedDate);
+    const selectedDate = selectedDateString ? new Date(selectedDateString) : undefined;
 
     return (
         <div className={'flex w-full bg-yellow-200 h-16 p-2 items-center'}>
@@ -25,7 +26,7 @@ export const Header = () => {
                 </div>
 
                 <div>
-                    {selectedDate.toLocaleDateString()}
+                    {selectedDate?.toLocaleDateString()}
                 </div>
 
             </div>

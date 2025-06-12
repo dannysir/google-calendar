@@ -3,6 +3,7 @@ import type {RootState} from "../../redux/config/configStore.ts";
 
 export const Detail = () => {
     const {currentWeek} = useSelector((state: RootState) => state.calendar);
+    const currentWeekArr = currentWeek.map(v => new Date(v));
 
     const hours = Array.from({length: 23}, (_, i) => i + 1);
     const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
@@ -15,7 +16,7 @@ export const Detail = () => {
                         <div className="w-28 p-3 text-sm font-medium">
                         </div>
 
-                        {currentWeek.map((date, index) => (
+                        {currentWeekArr.map((date, index) => (
                             <div
                                 key={date.getDate()}
                                 className={`flex-1 min-w-[112px] p-3 border-b-2 border-gray-100 text-center text-sm bg-white`}
