@@ -14,7 +14,6 @@ export const Modal = () => {
         dispatch(closeModal());
     };
 
-    // 배경 클릭 시에만 조건 확인
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) {
             handleClose();
