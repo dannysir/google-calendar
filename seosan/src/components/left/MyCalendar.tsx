@@ -26,6 +26,7 @@ export function MyDatePicker() {
             formatters={{
                 formatCaption: (date) => `${date.getFullYear()}년 ${date.getMonth() + 1}월`
             }}
+            className={'bg-gray-50'}
         />
     );
 }
