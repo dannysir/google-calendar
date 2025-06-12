@@ -1,14 +1,14 @@
 import './App.css'
-import {MyDatePicker} from "./MyCalendar.tsx";
 import {Provider} from "react-redux";
 import {store} from "./redux/config/configStore.ts";
+import {Calendar} from "./pages/Calendar.tsx";
 
 function App() {
 
   return (
     <>
         <Provider store={store}>
-            <MyDatePicker/>
+            <Calendar/>
         </Provider>
     </>
   )

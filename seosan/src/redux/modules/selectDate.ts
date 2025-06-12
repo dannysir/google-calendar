@@ -2,11 +2,30 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface CalendarState {
-    selectedDate: Date | undefined;
+    selectedDate: Date;
+    currentWeek: Date[];
 }
 
+const getSelectedWeek = (date: Date): Date[] => {
+    const newSelectedWeek = [];
+    const sunday = new Date(date);
+    const day = sunday.getDay();
+    const dateOfSun = sunday.getDate() - day;
+    sunday.setDate(dateOfSun);
+
+    for (let i = 0; i < 7; i++) {
+        const weekDate = new Date(sunday);
+        weekDate.setDate(sunday.getDate() + i);
+        newSelectedWeek.push(weekDate);
+    }
+    return newSelectedWeek;
+};
+
+const now = new Date();
+
 const initialState: CalendarState = {
-    selectedDate: new Date(),
+    selectedDate: now,
+    currentWeek: getSelectedWeek(now),
 };
 
 const calendarSlice = createSlice({
@@ -14,7 +33,10 @@ const calendarSlice = createSlice({
     initialState,
     reducers: {
         setSelectedDate: (state, action: PayloadAction<Date | undefined>) => {
-            state.selectedDate = action.payload;
+            if (action.payload) {
+                state.selectedDate = action.payload;
+                state.currentWeek = getSelectedWeek(action.payload);
+            }
         },
     },
 });
