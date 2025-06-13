@@ -1,8 +1,9 @@
 import {useState, useEffect, useRef} from "react";
 import {MyDatePicker} from "../left/MyCalendar.tsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../redux/config/configStore.ts";
 import {formatMonthDateDay, formatTime, hours} from "../../utills.ts";
+import {addEvent} from "../../redux/modules/event.ts";
 
 type Props = {
     handleClose: () => void
@@ -12,7 +13,7 @@ export const AddModal = (props: Props) => {
     const [openCalendar, setOpenCalendar] = useState<boolean>(false);
     const [startTimeToggle, setStartTimeToggle] = useState<boolean>(false);
     const [endTimeToggle, setEndTimeToggle] = useState<boolean>(false);
-    const titleRef = useRef<HTMLInputElement>(null)
+    const [title, setTitle] = useState<string>("");
     const calendarRef = useRef<HTMLDivElement>(null);
     const startTimeRef = useRef<HTMLDivElement>(null);
     const endTimeRef = useRef<HTMLDivElement>(null);
@@ -22,6 +23,7 @@ export const AddModal = (props: Props) => {
     const nowHour = nowDate.getHours();
     const [selectedStart, setSelectedStart] = useState<number>(nowHour);
     const [selectedEnd, setSelectedEnd] = useState<number>(nowHour + 1);
+    const dispatch = useDispatch();
 
     const handleStartTimeSelect = (hour: number) => {
         setSelectedStart(hour);
@@ -31,6 +33,30 @@ export const AddModal = (props: Props) => {
     const handleEndTimeSelect = (hour: number) => {
         setSelectedEnd(hour);
         setEndTimeToggle(false);
+    };
+    const handleAddEvent = () => {
+        if (!title.trim()) {
+            alert("제목을 입력해주세요.");
+            return;
+        }
+
+        const newEvent = {
+            id: Date.now(),
+            title: title,
+            eventDate: selected,
+            startTime: selectedStart,
+            endTime: selectedEnd,
+            repeat: false,
+        }
+        dispatch(addEvent(newEvent));
+
+        // 모달 닫기
+        props.handleClose();
+
+        // 폼 초기화 (선택사항)
+        setTitle("");
+        setSelectedStart(nowHour);
+        setSelectedEnd(nowHour + 1);
     };
 
     useEffect(() => {
@@ -98,7 +124,7 @@ export const AddModal = (props: Props) => {
 
             <div className="mb-6 h-8">
                 <input
-                    ref={titleRef}
+                    onChange={(e) => setTitle(e.target.value)}
                     type="text"
                     placeholder="제목 추가"
                     className="w-full py-1 border-b-2 border-gray-300 focus:outline-none focus:border-b-[3px] focus:border-blue-500 transition-colors text-2xl"
@@ -202,6 +228,7 @@ export const AddModal = (props: Props) => {
                     </button>
                     <button
                         className="flex-1 px-4 py-3 bg-blue-700 text-white rounded-3xl hover:bg-blue-600 font-medium transition-colors cursor-pointer"
+                        onClick={handleAddEvent}
                     >
                         저장
                     </button>

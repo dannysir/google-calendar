@@ -6,6 +6,10 @@ export const Detail = () => {
     const {currentWeek} = useSelector((state: RootState) => state.calendar);
     const currentWeekArr = currentWeek.map(v => new Date(v));
 
+    const {eventArray} = useSelector((state: RootState) => state.event);
+
+    console.log(eventArray);
+
     const hours = Array.from({length: 23}, (_, i) => i + 1);
 
     return (
