@@ -50,10 +50,8 @@ export const AddModal = (props: Props) => {
         }
         dispatch(addEvent(newEvent));
 
-        // 모달 닫기
         props.handleClose();
 
-        // 폼 초기화 (선택사항)
         setTitle("");
         setSelectedStart(nowHour);
         setSelectedEnd(nowHour + 1);

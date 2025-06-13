@@ -1,13 +1,27 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../redux/config/configStore.ts";
 import {weekdays} from "../../utills.ts";
 import type {EventType} from "../../redux/modules/event.ts";
+import {openModal} from "../../redux/modules/modal.ts";
+import type {ModalType} from "../../redux/modules/modal.ts";
+import {setSelectedDate} from "../../redux/modules/selectDate.ts";
 
 export const Detail = () => {
     const {currentWeek} = useSelector((state: RootState) => state.calendar);
     const currentWeekArr = currentWeek.map(v => new Date(v));
 
     const {eventArray} = useSelector((state: RootState) => state.event);
+    const dispatch = useDispatch();
+
+    const handleOpenEvent = (event: EventType) => {
+        const updateString : ModalType = 'update'
+        const newModalObj = {
+            modalType: updateString,
+            selectedEvent: event
+        };
+        dispatch(openModal(newModalObj));
+        dispatch(setSelectedDate(event.eventDate))
+    };
 
     const hours = Array.from({length: 24}, (_, i) => i);
 
@@ -29,6 +43,7 @@ export const Detail = () => {
                     key={`${event.id}`}
                     className="absolute left-1 right-1 bg-blue-500 text-white text-xs rounded px-2 py-1 z-10"
                     style={{ height: `${height}px` }}
+                    onClick={() => handleOpenEvent(event)}
                 >
                     <div className="font-medium truncate">{event.title}</div>
                     <div className="text-xs opacity-80">
