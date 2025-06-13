@@ -164,7 +164,7 @@ export const AddModal = (props: Props) => {
                                 ref={startTimeRef}
                             >
                                 {hours
-                                    .filter(hour => hour < 24)
+                                    .filter(hour => hour <= 24)
                                     .map((hour) => (
                                         <div
                                             key={hour}
@@ -191,7 +191,7 @@ export const AddModal = (props: Props) => {
                                 ref={endTimeRef}
                             >
                                 {hours
-                                    .filter(hour => hour < 24)
+                                    .filter(hour => hour <= 24)
                                     .map((hour) => (
                                         <div
                                             key={hour}

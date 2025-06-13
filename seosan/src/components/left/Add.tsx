@@ -10,12 +10,12 @@ export const Add = () => {
     };
 
     return (
-        <div className={'flex'}>
+        <div className='flex'>
             <div
-                className={'flex w-32 bg-white h-14 justify-center items-center rounded-2xl shadow-sm shadow-gray-500 gap-2  cursor-pointer hover:bg-gray-100'}
+                className='flex w-32 bg-white h-14 justify-center items-center rounded-2xl shadow-sm shadow-gray-500 gap-2  cursor-pointer hover:bg-gray-100'
                 onClick={handleOpenModal}
             >
-                <PlusIcon className={'w-6 h-6'}/>
+                <PlusIcon className='w-6 h-6'/>
                 <div>만들기</div>
             </div>
         </div>
