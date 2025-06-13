@@ -1,12 +1,12 @@
 import {useSelector} from "react-redux";
 import type {RootState} from "../../redux/config/configStore.ts";
+import {weekdays} from "../../utills.ts";
 
 export const Detail = () => {
     const {currentWeek} = useSelector((state: RootState) => state.calendar);
     const currentWeekArr = currentWeek.map(v => new Date(v));
 
     const hours = Array.from({length: 23}, (_, i) => i + 1);
-    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
 
     return (
         <div className="h-[90%] w-full bg-white rounded-2xl overflow-hidden">

@@ -1,20 +1,212 @@
+import {useState, useEffect, useRef} from "react";
+import {MyDatePicker} from "../left/MyCalendar.tsx";
+import {useSelector} from "react-redux";
+import type {RootState} from "../../redux/config/configStore.ts";
+import {formatMonthDateDay, formatTime, hours} from "../../utills.ts";
+
 type Props = {
-    handleClose : () => void
+    handleClose: () => void
 };
+
 export const AddModal = (props: Props) => {
+    const [openCalendar, setOpenCalendar] = useState<boolean>(false);
+    const [startTimeToggle, setStartTimeToggle] = useState<boolean>(false);
+    const [endTimeToggle, setEndTimeToggle] = useState<boolean>(false);
+    const titleRef = useRef<HTMLInputElement>(null)
+    const calendarRef = useRef<HTMLDivElement>(null);
+    const startTimeRef = useRef<HTMLDivElement>(null);
+    const endTimeRef = useRef<HTMLDivElement>(null);
+    const {selected, now} = useSelector((state: RootState) => state.calendar);
+    const selectedDate = new Date(selected);
+    const nowDate = new Date(now);
+    const nowHour = nowDate.getHours();
+    const [selectedStart, setSelectedStart] = useState<number>(nowHour);
+    const [selectedEnd, setSelectedEnd] = useState<number>(nowHour + 1);
+
+    const handleStartTimeSelect = (hour: number) => {
+        setSelectedStart(hour);
+        setStartTimeToggle(false);
+    };
+
+    const handleEndTimeSelect = (hour: number) => {
+        setSelectedEnd(hour);
+        setEndTimeToggle(false);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
+                setOpenCalendar(false);
+            }
+        };
+
+        if (openCalendar) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [openCalendar]);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (startTimeRef.current && !startTimeRef.current.contains(event.target as Node)) {
+                setStartTimeToggle(false);
+            }
+        };
+
+        if (startTimeToggle) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [startTimeToggle]);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (endTimeRef.current && !endTimeRef.current.contains(event.target as Node)) {
+                setEndTimeToggle(false);
+            }
+        };
+
+        if (endTimeToggle) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [endTimeToggle]);
+
     return (
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md shadow-gray-400 w-[448px]">
-            <h1 className="text-xl font-bold text-center">HELLO ADD</h1>
+        <div
+            className="relative flex flex-col bg-gray-100 px-8 py-4 rounded-xl shadow-lg border border-gray-200 min-w-[520px] h-[620px] text-sm font-normal">
+            <div className="flex justify-end items-center cursor-pointer">
+                <button
+                    onClick={props.handleClose}
+                    className="p-2"
+                >
+                    <svg className="w-5 h-5 text-gray-500 cursor-pointer" fill="none" stroke="currentColor"
+                         viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
 
+            <div className="mb-6 h-8">
+                <input
+                    ref={titleRef}
+                    type="text"
+                    placeholder="제목 추가"
+                    className="w-full py-1 border-b-2 border-gray-300 focus:outline-none focus:border-b-[3px] focus:border-blue-500 transition-colors text-2xl"
+                />
+            </div>
 
+            <div className="mb-6">
+                <div className="w-full h-10 mb-4 relative flex justify-between items-center">
+                    {/*날짜 지정*/}
+                    <div
+                        className="w-[44%] px-4 py-3 bg-gray-300 rounded-md cursor-pointer"
+                        onClick={() => setOpenCalendar(!openCalendar)}
+                    >
+                        {formatMonthDateDay(selectedDate)}
+                    </div>
 
+                    {openCalendar && (
+                        <div
+                            ref={calendarRef}
+                            className="absolute z-10 flex shadow-lg mt-4 bg-white p-1 rounded-lg top-12"
+                        >
+                            <MyDatePicker/>
+                        </div>
+                    )}
 
-            <button
-                onClick={props.handleClose}
-                className="mt-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 w-full"
-            >
-                닫기
-            </button>
+                    <div className={'flex w-fit items-center justify-end gap-4'}>
+                        {/*시작 시간*/}
+                        <div
+                            className="w-[100px] px-4 py-3 bg-gray-300 rounded-md cursor-pointer"
+                            onClick={() => setStartTimeToggle(!startTimeToggle)}
+                        >
+                            {formatTime(selectedStart)}
+                        </div>
+                        {startTimeToggle && (
+                            <div
+                                className="absolute z-10 flex flex-col shadow-lg mt-4 bg-white p-1 rounded-lg top-10 max-h-48 overflow-y-scroll w-[92px] h-fit right-36"
+                                ref={startTimeRef}
+                            >
+                                {hours
+                                    .filter(hour => hour < 24)
+                                    .map((hour) => (
+                                        <div
+                                            key={hour}
+                                            className="hover:bg-gray-300 px-4 py-2 cursor-pointer rounded-md flex items-center justify-center"
+                                            onClick={() => handleStartTimeSelect(hour)}
+                                        >
+                                            {String(hour).padStart(2, '0')}:00
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        )}
+                        <div>-</div>
+                        {/* 종료 시간*/}
+                        <div
+                            className="w-[100px] px-4 py-3 bg-gray-300 rounded-md cursor-pointer"
+                            onClick={() => setEndTimeToggle(!endTimeToggle)}
+                        >
+                            {formatTime(selectedEnd)}
+                        </div>
+                        {endTimeToggle && (
+                            <div
+                                className="absolute z-10 flex flex-col shadow-lg mt-4 bg-white p-1 rounded-lg top-10 max-h-48 overflow-y-scroll w-[92px] h-fit right-1"
+                                ref={endTimeRef}
+                            >
+                                {hours
+                                    .filter(hour => hour < 24)
+                                    .map((hour) => (
+                                        <div
+                                            key={hour}
+                                            className="hover:bg-gray-300 px-4 py-2 cursor-pointer rounded-md flex items-center justify-center"
+                                            onClick={() => handleEndTimeSelect(hour)}
+                                        >
+                                            {String(hour).padStart(2, '0')}:00
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            <div className="mb-8">
+                <label className="flex w-fit items-center gap-3 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                    />
+                    <span className="text-sm font-medium text-gray-700">반복 일정</span>
+                </label>
+            </div>
+
+            <div className={'flex w-full h-full justify-end items-end'}>
+                <div className="flex gap-3">
+                    <button
+                        onClick={props.handleClose}
+                        className="flex-1 px-4 py-3 text-gray-700 rounded-3xl hover:bg-gray-200 font-medium transition-colors cursor-pointer"
+                    >
+                        취소
+                    </button>
+                    <button
+                        className="flex-1 px-4 py-3 bg-blue-700 text-white rounded-3xl hover:bg-blue-600 font-medium transition-colors cursor-pointer"
+                    >
+                        저장
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };

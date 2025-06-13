@@ -5,9 +5,13 @@ import type { RootState } from '../../redux/config/configStore.ts';
 import { setSelectedDate } from "../../redux/modules/selectDate.ts";
 import { ko } from "react-day-picker/locale";
 
-export function MyDatePicker() {
-    const selectedDateString = useSelector((state: RootState) => state.calendar.selectedDate);
-    const selectedDate = new Date(selectedDateString);
+type Props = {
+    className? : string
+}
+
+export function MyDatePicker(props : Props) {
+    const {selected} = useSelector((state: RootState) => state.calendar);
+    const selectedDate = new Date(selected);
     const dispatch = useDispatch();
 
     const handleSelect = (date: Date | undefined) => {
@@ -29,7 +33,7 @@ export function MyDatePicker() {
             formatters={{
                 formatCaption: (date) => `${date.getFullYear()}년 ${date.getMonth() + 1}월`
             }}
-            className={'bg-gray-50'}
+            className={props.className}
         />
     );
 }
