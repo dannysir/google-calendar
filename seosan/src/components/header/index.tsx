@@ -1,11 +1,25 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../redux/config/configStore.ts";
 import {Bars3Icon, ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/outline";
 import {formatTitleMonth} from "../../utills.ts";
+import {setDateNextWeek, setDateNow, setDatePrevWeek} from "../../redux/modules/selectDate.ts";
 
 export const Header = () => {
-    const {selected, currentWeek} = useSelector((state: RootState) => state.calendar);
+    const {currentWeek} = useSelector((state: RootState) => state.calendar);
     const currentWeekDate = currentWeek.map(v => new Date(v));
+    const dispatch = useDispatch();
+
+    const handleClickPrevWeek = () => {
+        dispatch(setDatePrevWeek());
+    };
+
+    const handleClickNextWeek = () => {
+        dispatch(setDateNextWeek());
+    };
+
+    const handleClickToday = () => {
+        dispatch(setDateNow());
+    };
 
     return (
         <div className='flex w-full min-w-[896px] h-16 px-4 py-2 items-center'>
@@ -18,17 +32,26 @@ export const Header = () => {
 
             <div className="flex w-full items-center justify-between p-2">
                 <div className='flex gap-4 items-center'>
-                    <div className="flex items-center justify-center rounded-3xl border border-black w-[76px] h-12 mx-2 cursor-pointer hover:bg-gray-200 transition-colors">
+                    <div
+                        className="flex items-center justify-center rounded-3xl border border-black w-[76px] h-12 mx-2 cursor-pointer hover:bg-gray-200 transition-colors"
+                        onClick={handleClickToday}
+                    >
                         <div>
                             오늘
                         </div>
                     </div>
 
                     <div className='flex items-center'>
-                        <div className="flex items-center justify-center w-9 h-9 cursor-pointer rounded-2xl hover:bg-gray-200 transition-colors">
+                        <div
+                            className="flex items-center justify-center w-9 h-9 cursor-pointer rounded-2xl hover:bg-gray-200 transition-colors"
+                            onClick={handleClickPrevWeek}
+                        >
                             <ChevronLeftIcon className='w-5 stroke-[2.5]'/>
                         </div>
-                        <div className="flex items-center justify-center w-9 h-9 cursor-pointer rounded-2xl hover:bg-gray-200 transition-colors">
+                        <div
+                            className="flex items-center justify-center w-9 h-9 cursor-pointer rounded-2xl hover:bg-gray-200 transition-colors"
+                            onClick={handleClickNextWeek}
+                        >
                             <ChevronRightIcon className='w-5 stroke-[2.5]'/>
                         </div>
                     </div>
