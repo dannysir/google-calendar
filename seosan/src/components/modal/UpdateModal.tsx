@@ -15,7 +15,7 @@ export const UpdateModal = (props: Props) => {
     const [startTimeToggle, setStartTimeToggle] = useState<boolean>(false);
     const [endTimeToggle, setEndTimeToggle] = useState<boolean>(false);
     const [title, setTitle] = useState<string>(selectedEvent ? selectedEvent.title : '');
-    const [isRepeat, setIsRepeat] = useState<string | null>(null);
+    const [isRepeat, setIsRepeat] = useState<string | null>(selectedEvent? selectedEvent.repeat : null);
     const calendarRef = useRef<HTMLDivElement>(null);
     const startTimeRef = useRef<HTMLDivElement>(null);
     const endTimeRef = useRef<HTMLDivElement>(null);
@@ -137,85 +137,85 @@ export const UpdateModal = (props: Props) => {
             </div>
 
             <div className="mb-4">
-                <div className="w-full h-10 mb-4 relative flex justify-between items-center">
-                    {/*날짜 지정*/}
-                    <div
-                        className="w-[44%] px-4 py-3 bg-gray-300 rounded-md cursor-pointer"
-                        onClick={() => setOpenCalendar(!openCalendar)}
-                    >
-                        {formatMonthDateDay(selectedDate)}
+                <div className="w-full mb-4 relative flex justify-between items-start gap-4">
+                    <div className="relative w-[44%]" ref={calendarRef}>
+                        <div
+                            className="w-full px-4 py-3 bg-gray-300 rounded-md cursor-pointer flex items-center"
+                            onClick={() => setOpenCalendar(!openCalendar)}
+                        >
+                            {formatMonthDateDay(selectedDate)}
+                        </div>
+
+                        {openCalendar && (
+                            <div className="absolute z-20 top-full left-0 mt-1 bg-white shadow-lg rounded-lg border border-gray-200">
+                                <MyDatePicker/>
+                            </div>
+                        )}
                     </div>
 
-                    {openCalendar && (
-                        <div
-                            ref={calendarRef}
-                            className="absolute z-10 flex shadow-lg mt-4 bg-white p-1 rounded-lg top-12"
-                        >
-                            <MyDatePicker/>
-                        </div>
-                    )}
-
                     <div className={'flex w-fit items-center justify-end gap-4'}>
-                        {/*시작 시간*/}
-                        <div
-                            className="w-[100px] px-4 py-3 bg-gray-300 rounded-md cursor-pointer"
-                            onClick={() => setStartTimeToggle(!startTimeToggle)}
-                        >
-                            {formatTime(selectedStart)}
-                        </div>
-                        {startTimeToggle && (
+                        <div className="relative" ref={startTimeRef}>
                             <div
-                                className="absolute z-10 flex flex-col shadow-lg mt-4 bg-white p-1 rounded-lg top-10 max-h-48 overflow-y-scroll w-[92px] h-fit right-36"
-                                ref={startTimeRef}
+                                className="relative w-[100px] px-4 py-3 bg-gray-300 rounded-md cursor-pointer"
+                                onClick={() => setStartTimeToggle(!startTimeToggle)}
                             >
-                                {hours
-                                    .filter(hour => hour <= 24)
-                                    .map((hour) => (
-                                        <div
-                                            key={hour}
-                                            className="hover:bg-gray-300 px-4 py-2 cursor-pointer rounded-md flex items-center justify-center"
-                                            onClick={() => handleStartTimeSelect(hour)}
-                                        >
-                                            {String(hour).padStart(2, '0')}:00
-                                        </div>
-                                    ))
-                                }
+                                {formatTime(selectedStart)}
                             </div>
-                        )}
+                            {startTimeToggle && (
+                                <div
+                                    className="absolute z-10 top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto"
+                                >
+                                    {hours
+                                        .filter(hour => hour <= 24)
+                                        .map((hour) => (
+                                            <div
+                                                key={hour}
+                                                className="px-4 py-2 hover:bg-gray-300 cursor-pointer text-center first:rounded-t-lg last:rounded-b-lg"
+                                                onClick={() => handleStartTimeSelect(hour)}
+                                            >
+                                                {String(hour).padStart(2, '0')}:00
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            )}
+                        </div>
                         <div>-</div>
-                        {/* 종료 시간*/}
-                        <div
-                            className="w-[100px] px-4 py-3 bg-gray-300 rounded-md cursor-pointer"
-                            onClick={() => setEndTimeToggle(!endTimeToggle)}
-                        >
-                            {formatTime(selectedEnd)}
-                        </div>
-                        {endTimeToggle && (
+                        <div className="relative" ref={endTimeRef}>
                             <div
-                                className="absolute z-10 flex flex-col shadow-lg mt-4 bg-white p-1 rounded-lg top-10 max-h-48 overflow-y-scroll w-[92px] h-fit right-1"
-                                ref={endTimeRef}
+                                className="relative w-[100px] px-4 py-3 bg-gray-300 rounded-md cursor-pointer"
+                                onClick={() => setEndTimeToggle(!endTimeToggle)}
                             >
-                                {hours
-                                    .filter(hour => hour <= 24)
-                                    .map((hour) => (
-                                        <div
-                                            key={hour}
-                                            className="hover:bg-gray-300 px-4 py-2 cursor-pointer rounded-md flex items-center justify-center"
-                                            onClick={() => handleEndTimeSelect(hour)}
-                                        >
-                                            {String(hour).padStart(2, '0')}:00
-                                        </div>
-                                    ))
-                                }
+                                {formatTime(selectedEnd)}
                             </div>
-                        )}
+                            {endTimeToggle && (
+                                <div
+                                    className="absolute z-10 top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto"
+                                >
+                                    {hours
+                                        .filter(hour => hour <= 24)
+                                        .map((hour) => (
+                                            <div
+                                                key={hour}
+                                                className="px-4 py-2 hover:bg-gray-300 cursor-pointer text-center first:rounded-t-lg last:rounded-b-lg"
+                                                onClick={() => handleEndTimeSelect(hour)}
+                                            >
+                                                {String(hour).padStart(2, '0')}:00
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div className="mb-8">
+            <div className="mb-8 flex items-center gap-4">
                 <label className="flex w-fit items-center gap-3 cursor-pointer">
                     <input
+                        id="repeat-none"
+                        name="repeat"
                         type="checkbox"
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
                         checked={isRepeat === null}
@@ -225,6 +225,8 @@ export const UpdateModal = (props: Props) => {
                 </label>
                 <label className="flex w-fit items-center gap-3 cursor-pointer">
                     <input
+                        id="repeat-day"
+                        name="repeat"
                         type="checkbox"
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
                         checked={isRepeat === 'day'}
@@ -234,6 +236,8 @@ export const UpdateModal = (props: Props) => {
                 </label>
                 <label className="flex w-fit items-center gap-3 cursor-pointer">
                     <input
+                        id="repeat-daily"
+                        name="repeat"
                         type="checkbox"
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
                         checked={isRepeat === 'daily'}

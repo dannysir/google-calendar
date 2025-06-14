@@ -46,7 +46,7 @@ export const Detail = () => {
             return (
                 <div
                     key={`${event.id}`}
-                    className="absolute left-1 right-1 bg-blue-500 text-white text-xs rounded px-2 py-1 z-10 cursor-pointer hover:bg-blue-400 transition-colors"
+                    className="absolute left-1 right-1 bg-blue-500 text-white text-xs rounded px-2 py-1 z-[5] cursor-pointer hover:bg-blue-400 transition-colors border border-white"
                     style={{height: `${height}px`}}
                     onClick={() => handleOpenEvent(event)}
                 >

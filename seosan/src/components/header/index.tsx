@@ -62,8 +62,8 @@ export const Header = () => {
 
                 </div>
 
-                <div className='w-16'>
-                    우측
+                <div className='w-fit text-lg text-gray-500'>
+                    서산 | dannysir@naver.com
                 </div>
             </div>
 
