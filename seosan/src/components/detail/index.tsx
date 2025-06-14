@@ -7,14 +7,15 @@ import type {ModalType} from "../../redux/modules/modal.ts";
 import {setSelectedDate} from "../../redux/modules/selectDate.ts";
 
 export const Detail = () => {
-    const {currentWeek} = useSelector((state: RootState) => state.calendar);
-    const currentWeekArr = currentWeek.map(v => new Date(v));
-
+    const {currentWeek, now} = useSelector((state: RootState) => state.calendar);
     const {eventArray} = useSelector((state: RootState) => state.event);
     const dispatch = useDispatch();
+    const currentWeekArr = currentWeek.map(v => new Date(v));
+    const nowDate = new Date(now);
+
 
     const handleOpenEvent = (event: EventType) => {
-        const updateString : ModalType = 'update'
+        const updateString: ModalType = 'update'
         const newModalObj = {
             modalType: updateString,
             selectedEvent: event
@@ -25,8 +26,12 @@ export const Detail = () => {
 
     const hours = Array.from({length: 24}, (_, i) => i);
 
-    const isSameDay = (dateA: Date, dateB: Date): boolean => {
+    const isSameDate = (dateA: Date, dateB: Date): boolean => {
         return dateA.getFullYear() === dateB.getFullYear() && dateA.getMonth() === dateB.getMonth() && dateA.getDate() === dateB.getDate();
+    };
+
+    const isSameDay = (dateA: Date, dateB: Date): boolean => {
+        return dateA.getDay() === dateB.getDay();
     };
 
     const renderEvent = (eventArray: EventType[], hour: number) => {
@@ -42,7 +47,7 @@ export const Detail = () => {
                 <div
                     key={`${event.id}`}
                     className="absolute left-1 right-1 bg-blue-500 text-white text-xs rounded px-2 py-1 z-10 cursor-pointer hover:bg-blue-400 transition-colors"
-                    style={{ height: `${height}px` }}
+                    style={{height: `${height}px`}}
                     onClick={() => handleOpenEvent(event)}
                 >
                     <div className="font-medium truncate">{event.title}</div>
@@ -65,10 +70,11 @@ export const Detail = () => {
                         {currentWeekArr.map((date, index) => (
                             <div
                                 key={date.getDate()}
-                                className="flex-1 min-w-[112px] p-3 border-b-2 border-gray-100 text-center"
+                                className="flex flex-col flex-1 min-w-[112px] p-3 text-center items-center justify-center"
                             >
-                                <div className="font-medium text-gray-700">{weekdays[index]}</div>
-                                <div className="text-2xl font-normal text-black mt-1">
+                                <div
+                                    className={`font-medium ${isSameDate(nowDate, date) ? 'text-blue-700' : 'text-gray-700'}`}>{weekdays[index]}</div>
+                                <div className={`flex items-center justify-center text-2xl w-11 h-11 font-normal rounded-3xl mt-1 ${isSameDate(nowDate, date) ? 'text-white bg-blue-700' : 'text-gray-700'}`}>
                                     {date.getDate()}
                                 </div>
                             </div>
@@ -92,7 +98,13 @@ export const Detail = () => {
                         {currentWeekArr.map((date, dayIndex) => {
                             const thisWeekEvent = eventArray.filter((e) => {
                                 const eventDate = new Date(e.eventDate);
-                                return isSameDay(eventDate, date);
+                                if (e.repeat === 'day') {
+                                    return isSameDay(eventDate, date);
+                                } else if (e.repeat === 'daily') {
+                                    return true;
+                                } else {
+                                    return isSameDate(eventDate, date);
+                                }
                             })
                             return (
                                 <div key={date.toISOString()}

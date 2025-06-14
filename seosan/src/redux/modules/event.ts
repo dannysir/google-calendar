@@ -7,7 +7,7 @@ export interface EventType {
     eventDate: string;
     startTime: number;
     endTime: number;
-    repeat: boolean;
+    repeat: string | null;
 }
 
 interface EventState {

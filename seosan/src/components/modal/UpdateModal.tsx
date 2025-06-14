@@ -15,6 +15,7 @@ export const UpdateModal = (props: Props) => {
     const [startTimeToggle, setStartTimeToggle] = useState<boolean>(false);
     const [endTimeToggle, setEndTimeToggle] = useState<boolean>(false);
     const [title, setTitle] = useState<string>(selectedEvent ? selectedEvent.title : '');
+    const [isRepeat, setIsRepeat] = useState<string | null>(null);
     const calendarRef = useRef<HTMLDivElement>(null);
     const startTimeRef = useRef<HTMLDivElement>(null);
     const endTimeRef = useRef<HTMLDivElement>(null);
@@ -43,7 +44,7 @@ export const UpdateModal = (props: Props) => {
             eventDate: selected,
             startTime: selectedStart,
             endTime: selectedEnd,
-            repeat: false,
+            repeat: isRepeat,
         }
         dispatch(updateEvent(updatedEvent))
 
@@ -217,8 +218,28 @@ export const UpdateModal = (props: Props) => {
                     <input
                         type="checkbox"
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                        checked={isRepeat === null}
+                        onChange={() => setIsRepeat(null)}
                     />
-                    <span className="text-sm font-medium text-gray-700">반복 일정</span>
+                    <span className="text-sm font-medium text-gray-700">반복 없음</span>
+                </label>
+                <label className="flex w-fit items-center gap-3 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                        checked={isRepeat === 'day'}
+                        onChange={() => setIsRepeat('day')}
+                    />
+                    <span className="text-sm font-medium text-gray-700">요일 반복</span>
+                </label>
+                <label className="flex w-fit items-center gap-3 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                        checked={isRepeat === 'daily'}
+                        onChange={() => setIsRepeat('daily')}
+                    />
+                    <span className="text-sm font-medium text-gray-700">매일 반복</span>
                 </label>
             </div>
 
