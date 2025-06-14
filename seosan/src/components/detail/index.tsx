@@ -41,7 +41,7 @@ export const Detail = () => {
             return (
                 <div
                     key={`${event.id}`}
-                    className="absolute left-1 right-1 bg-blue-500 text-white text-xs rounded px-2 py-1 z-10"
+                    className="absolute left-1 right-1 bg-blue-500 text-white text-xs rounded px-2 py-1 z-10 cursor-pointer hover:bg-blue-400 transition-colors"
                     style={{ height: `${height}px` }}
                     onClick={() => handleOpenEvent(event)}
                 >
@@ -58,7 +58,7 @@ export const Detail = () => {
         <div className="h-[90%] w-full bg-white rounded-2xl">
             <div className="h-full overflow-auto">
                 <div className="min-w-[896px]">
-                    <div className="flex sticky top-0 z-10 bg-white text-sm">
+                    <div className="flex sticky top-0 z-10 bg-white text-sm rounded-2xl">
                         <div className="w-28 p-3 font-medium">
                         </div>
 
@@ -101,7 +101,7 @@ export const Detail = () => {
                                         return (
                                             <div
                                                 key={`${dayIndex}-${hour}`}
-                                                className="h-16 border-b border-r border-gray-200 hover:bg-gray-50 relative"
+                                                className="h-16 border-t border-l border-gray-200 hover:bg-gray-50 relative"
                                             >
                                                 {renderEvent(thisWeekEvent, hour)}
                                             </div>

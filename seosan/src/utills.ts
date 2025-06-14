@@ -12,3 +12,8 @@ export const formatTime = (hour : number): string => {
     const hours = String(hour % 12).padStart(2, '0');
     return `${ampm} ${hours}:00`
 };
+
+export const formatTitleMonth = (dateA : Date, dateB :Date) => {
+    const titleString = `${dateA.getFullYear()}년 ${dateA.getMonth() + 1}월 ${dateA.getMonth() !== dateB.getMonth() ? `- ${dateA.getFullYear() !== dateB.getFullYear() ? dateB.getFullYear() : ''} ${dateB.getMonth() + 1}월` : ''}`
+    return titleString;
+};
