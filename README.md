@@ -5,6 +5,8 @@ npm run dev
 
 ### 작동 영상
 
+동영상이 보이지 않으면 새로고침 한번만 부탁드립니다.
+
 https://github.com/user-attachments/assets/1048f295-462a-4d4f-b758-b35281d2ac7e
 
 ### 기능 설명
