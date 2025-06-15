@@ -1,14 +1,13 @@
 import {useDispatch} from "react-redux";
 import {openModal} from "../../redux/modules/modal.ts";
 import {PlusIcon} from "@heroicons/react/16/solid";
-import type {ModalType} from "../../redux/modules/modal.ts";
+import {ADD_STRING} from "../../utills.ts";
 
 export const Add = () => {
     const dispatch = useDispatch();
     const handleOpenModal = () => {
-        const addString : ModalType = 'add'
         const newModalObj = {
-            modalType: addString,
+            modalType: ADD_STRING,
         };
         dispatch(openModal(newModalObj));
     };

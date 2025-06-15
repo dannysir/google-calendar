@@ -1,4 +1,4 @@
-import {MyDatePicker} from "./MyCalendar.tsx";
+import {MyDatePicker} from "../MyCalendar.tsx";
 import {Add} from "./Add.tsx";
 
 export const Left = () => {

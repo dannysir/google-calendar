@@ -1,12 +1,14 @@
 import {useState, useEffect, useRef} from "react";
-import {MyDatePicker} from "../left/MyCalendar.tsx";
+import {MyDatePicker} from "../MyCalendar.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../redux/config/configStore.ts";
-import {formatMonthDateDay, formatTime, hours} from "../../utills.ts";
+import {ALERT_NO_TITLE, formatMonthDateDay, formatTime, hours} from "../../utills.ts";
 import {addEvent} from "../../redux/modules/event.ts";
+import {XMarkIcon} from "@heroicons/react/24/outline";
 
 type Props = {
     handleClose: () => void
+    nowHour: number;
 };
 
 export const AddModal = (props: Props) => {
@@ -18,12 +20,10 @@ export const AddModal = (props: Props) => {
     const calendarRef = useRef<HTMLDivElement>(null);
     const startTimeRef = useRef<HTMLDivElement>(null);
     const endTimeRef = useRef<HTMLDivElement>(null);
-    const {selected, now} = useSelector((state: RootState) => state.calendar);
+    const {selected} = useSelector((state: RootState) => state.calendar);
     const selectedDate = new Date(selected);
-    const nowDate = new Date(now);
-    const nowHour = nowDate.getHours();
-    const [selectedStart, setSelectedStart] = useState<number>(nowHour);
-    const [selectedEnd, setSelectedEnd] = useState<number>(nowHour + 1);
+    const [selectedStart, setSelectedStart] = useState<number>(selectedDate.getHours());
+    const [selectedEnd, setSelectedEnd] = useState<number>(selectedDate.getHours() + 1);
     const dispatch = useDispatch();
 
     const handleStartTimeSelect = (hour: number) => {
@@ -37,7 +37,7 @@ export const AddModal = (props: Props) => {
     };
     const handleAddEvent = () => {
         if (!title.trim()) {
-            alert("제목을 입력해주세요.");
+            alert(ALERT_NO_TITLE);
             return;
         }
 
@@ -54,8 +54,8 @@ export const AddModal = (props: Props) => {
         props.handleClose();
 
         setTitle("");
-        setSelectedStart(nowHour);
-        setSelectedEnd(nowHour + 1);
+        setSelectedStart(props.nowHour);
+        setSelectedEnd(props.nowHour + 1);
     };
 
     useEffect(() => {
@@ -109,15 +109,12 @@ export const AddModal = (props: Props) => {
     return (
         <div
             className="relative flex flex-col bg-gray-100 px-8 py-4 rounded-xl shadow-lg border border-gray-200 min-w-[520px] h-[620px] text-sm font-normal">
-            <div className="flex justify-end items-center cursor-pointer">
+            <div className="flex justify-end items-center">
                 <button
                     onClick={props.handleClose}
-                    className="p-2"
+                    className="p-2 cursor-pointer"
                 >
-                    <svg className="w-5 h-5 text-gray-500 cursor-pointer" fill="none" stroke="currentColor"
-                         viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
+                    <XMarkIcon className="stroke-2 stroke-gray-500 w-5 h-5"/>
                 </button>
             </div>
 
@@ -158,7 +155,6 @@ export const AddModal = (props: Props) => {
                             {startTimeToggle && (
                                 <div
                                     className="absolute z-10 top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto"
-                                    ref={startTimeRef}
                                 >
                                     {hours
                                         .filter(hour => hour <= 24)
@@ -186,7 +182,6 @@ export const AddModal = (props: Props) => {
                             {endTimeToggle && (
                                 <div
                                     className="absolute z-10 top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto"
-                                    ref={endTimeRef}
                                 >
                                     {hours
                                         .filter(hour => hour <= 24)

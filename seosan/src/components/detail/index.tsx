@@ -1,10 +1,10 @@
 import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../redux/config/configStore.ts";
-import {weekdays} from "../../utills.ts";
+import {ADD_STRING, DAILY_STRING, DAY_STRING, UPDATE_STRING, weekdays} from "../../utills.ts";
 import type {EventType} from "../../redux/modules/event.ts";
 import {openModal} from "../../redux/modules/modal.ts";
-import type {ModalType} from "../../redux/modules/modal.ts";
 import {setSelectedDate} from "../../redux/modules/selectDate.ts";
+import React from "react";
 
 export const Detail = () => {
     const {currentWeek, now} = useSelector((state: RootState) => state.calendar);
@@ -12,19 +12,26 @@ export const Detail = () => {
     const dispatch = useDispatch();
     const currentWeekArr = currentWeek.map(v => new Date(v));
     const nowDate = new Date(now);
+    const hours = Array.from({length: 24}, (_, i) => i);
 
-
-    const handleOpenEvent = (event: EventType) => {
-        const updateString: ModalType = 'update'
+    const handleOpenEvent = (event: EventType, e : React.MouseEvent) => {
+        e.stopPropagation();
         const newModalObj = {
-            modalType: updateString,
+            modalType: UPDATE_STRING,
             selectedEvent: event
         };
-        dispatch(openModal(newModalObj));
         dispatch(setSelectedDate(event.eventDate))
+        dispatch(openModal(newModalObj));
     };
 
-    const hours = Array.from({length: 24}, (_, i) => i);
+    const handleClickDate = (date: Date, hour: number) => {
+        date.setHours(hour);
+        const newModalObj = {
+            modalType: ADD_STRING,
+        }
+        dispatch(setSelectedDate(date.toISOString()));
+        dispatch(openModal(newModalObj));
+    };
 
     const isSameDate = (dateA: Date, dateB: Date): boolean => {
         return dateA.getFullYear() === dateB.getFullYear() && dateA.getMonth() === dateB.getMonth() && dateA.getDate() === dateB.getDate();
@@ -48,7 +55,7 @@ export const Detail = () => {
                     key={`${event.id}`}
                     className="absolute left-1 right-1 bg-blue-500 text-white text-xs rounded px-2 py-1 z-[5] cursor-pointer hover:bg-blue-400 transition-colors border border-white"
                     style={{height: `${height}px`}}
-                    onClick={() => handleOpenEvent(event)}
+                    onClick={(e) => handleOpenEvent(event, e)}
                 >
                     <div className="font-medium truncate">{event.title}</div>
                     <div className="text-xs opacity-80">
@@ -98,9 +105,9 @@ export const Detail = () => {
                         {currentWeekArr.map((date, dayIndex) => {
                             const thisWeekEvent = eventArray.filter((e) => {
                                 const eventDate = new Date(e.eventDate);
-                                if (e.repeat === 'day') {
+                                if (e.repeat === DAY_STRING) {
                                     return isSameDay(eventDate, date);
-                                } else if (e.repeat === 'daily') {
+                                } else if (e.repeat === DAILY_STRING) {
                                     return true;
                                 } else {
                                     return isSameDate(eventDate, date);
@@ -108,12 +115,13 @@ export const Detail = () => {
                             })
                             return (
                                 <div key={date.toISOString()}
-                                     className="flex flex-col flex-1 min-w-[112px] flex-shrink-0 relative">
+                                     className="flex flex-col flex-1 min-w-[112px] relative">
                                     {hours.map(hour => {
                                         return (
                                             <div
                                                 key={`${dayIndex}-${hour}`}
                                                 className="h-16 border-t border-l border-gray-200 hover:bg-gray-50 relative"
+                                                onClick={() => handleClickDate(date, hour)}
                                             >
                                                 {renderEvent(thisWeekEvent, hour)}
                                             </div>

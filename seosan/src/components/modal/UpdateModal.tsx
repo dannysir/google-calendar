@@ -1,12 +1,15 @@
 import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../redux/config/configStore.ts";
 import {formatMonthDateDay, formatTime, hours} from "../../utills.ts";
-import {MyDatePicker} from "../left/MyCalendar.tsx";
+import {MyDatePicker} from "../MyCalendar.tsx";
 import {useEffect, useRef, useState} from "react";
 import {deleteEvent, updateEvent} from "../../redux/modules/event.ts";
 import type {EventType} from "../../redux/modules/event.ts";
+import {XMarkIcon} from "@heroicons/react/24/outline";
+
 type Props = {
-    handleClose : () => void
+    handleClose: () => void
+    nowHour: number;
 };
 
 export const UpdateModal = (props: Props) => {
@@ -15,16 +18,14 @@ export const UpdateModal = (props: Props) => {
     const [startTimeToggle, setStartTimeToggle] = useState<boolean>(false);
     const [endTimeToggle, setEndTimeToggle] = useState<boolean>(false);
     const [title, setTitle] = useState<string>(selectedEvent ? selectedEvent.title : '');
-    const [isRepeat, setIsRepeat] = useState<string | null>(selectedEvent? selectedEvent.repeat : null);
+    const [isRepeat, setIsRepeat] = useState<string | null>(selectedEvent ? selectedEvent.repeat : null);
     const calendarRef = useRef<HTMLDivElement>(null);
     const startTimeRef = useRef<HTMLDivElement>(null);
     const endTimeRef = useRef<HTMLDivElement>(null);
-    const {selected, now} = useSelector((state: RootState) => state.calendar);
+    const {selected} = useSelector((state: RootState) => state.calendar);
     const selectedDate = new Date(selected);
-    const nowDate = new Date(now);
-    const nowHour = nowDate.getHours();
-    const [selectedStart, setSelectedStart] = useState<number>(selectedEvent? selectedEvent.startTime : nowHour);
-    const [selectedEnd, setSelectedEnd] = useState<number>(selectedEvent? selectedEvent.endTime : nowHour + 1);
+    const [selectedStart, setSelectedStart] = useState<number>(selectedEvent ? selectedEvent.startTime : props.nowHour);
+    const [selectedEnd, setSelectedEnd] = useState<number>(selectedEvent ? selectedEvent.endTime : props.nowHour + 1);
     const dispatch = useDispatch();
 
     const handleStartTimeSelect = (hour: number) => {
@@ -38,7 +39,7 @@ export const UpdateModal = (props: Props) => {
     };
 
     const handleUpdateEvent = () => {
-        const updatedEvent : EventType = {
+        const updatedEvent: EventType = {
             id: selectedEvent ? selectedEvent.id : Date.now(),
             title: title,
             eventDate: selected,
@@ -51,8 +52,8 @@ export const UpdateModal = (props: Props) => {
         props.handleClose();
 
         setTitle("");
-        setSelectedStart(nowHour);
-        setSelectedEnd(nowHour + 1);
+        setSelectedStart(props.nowHour);
+        setSelectedEnd(props.nowHour + 1);
     };
 
     const handleDeleteEvent = () => {
@@ -61,8 +62,8 @@ export const UpdateModal = (props: Props) => {
         props.handleClose();
 
         setTitle("");
-        setSelectedStart(nowHour);
-        setSelectedEnd(nowHour + 1);
+        setSelectedStart(props.nowHour);
+        setSelectedEnd(props.nowHour + 1);
     };
 
     useEffect(() => {
@@ -114,16 +115,14 @@ export const UpdateModal = (props: Props) => {
     }, [endTimeToggle]);
 
     return (
-        <div className="relative flex flex-col bg-gray-100 px-8 py-4 rounded-xl shadow-lg border border-gray-200 min-w-[520px] h-[620px] text-sm font-normal">
-            <div className="flex justify-end items-center cursor-pointer">
+        <div
+            className="relative flex flex-col bg-gray-100 px-8 py-4 rounded-xl shadow-lg border border-gray-200 min-w-[520px] h-[620px] text-sm font-normal">
+            <div className="flex justify-end items-center">
                 <button
                     onClick={props.handleClose}
-                    className="p-2"
+                    className="p-2 cursor-pointer"
                 >
-                    <svg className="w-5 h-5 text-gray-500 cursor-pointer" fill="none" stroke="currentColor"
-                         viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
+                    <XMarkIcon className="stroke-2 stroke-gray-500 w-5 h-5"/>
                 </button>
             </div>
 
@@ -147,7 +146,8 @@ export const UpdateModal = (props: Props) => {
                         </div>
 
                         {openCalendar && (
-                            <div className="absolute z-20 top-full left-0 mt-1 bg-white shadow-lg rounded-lg border border-gray-200">
+                            <div
+                                className="absolute z-20 top-full left-0 mt-1 bg-white shadow-lg rounded-lg border border-gray-200">
                                 <MyDatePicker/>
                             </div>
                         )}

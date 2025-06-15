@@ -13,7 +13,7 @@ export const Calendar = () => {
             <Header/>
             <div className={'w-full h-full flex gap-4 px-4 min-h-0'}>
                 <div className="w-[320px]">
-                    <Left/> {/* 25% */}
+                    <Left/>
                 </div>
                 <div  className="w-full overflow-hidden">
                     <Detail/>

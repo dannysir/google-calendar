@@ -1,4 +1,13 @@
+import type {ModalType} from "./redux/modules/modal.ts";
+
 export const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+export const ADD_STRING: ModalType = 'add';
+export const UPDATE_STRING:ModalType = 'update';
+
+export const DAY_STRING = 'day';
+export const DAILY_STRING = 'daily';
+export const ALERT_NO_TITLE = "제목을 입력해주세요.";
+
 
 export const hours = Array.from({length: 25}, (_, index) => index);
 
