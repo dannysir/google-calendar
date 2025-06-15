@@ -1,11 +1,11 @@
-### 작동 영상
-
-https://github.com/user-attachments/assets/1048f295-462a-4d4f-b758-b35281d2ac7e
-
 ### 실행 방법
 ```
 npm run dev
 ```
+
+### 작동 영상
+
+https://github.com/user-attachments/assets/1048f295-462a-4d4f-b758-b35281d2ac7e
 
 ### 기능 설명
 
