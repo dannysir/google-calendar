@@ -1,54 +1,103 @@
-# React + TypeScript + Vite
+# 체크리스트 & 일일 작업 내용
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 체크리스트
 
-Currently, two official plugins are available:
+- redux를 용한 전역 상태 관리.
+- date picker 추가.
+    - 선택 날짜 상태 관리.
+    - 선택 주(week) 상태 관리.
+- 주별 보기 달력.
+    - date picker에 고른 날짜에 따라 주별 달력 변경.
+    - 헤더 버튼 클릭시 주별 달력 변경.
+    - 이벤트 표시.
+    - 월별 보기 (optional)
+    - 달력 클릭 & 드래그로 이벤트 추가. (optional)
+- 모달.
+    - 좌측 버튼 클릭시 이벤트 추가(제목, 시간 입력).
+    - 주별 달력에 이벤트 클릭시 이벤트 수정(수정, 삭제).
+    - 반복 일정 (optional)
+    - 사용자 인터렉션에 따라 modal 생성 위치.
+- 구글 캘린더와 최대한 유사하게 디자인 (optional)
+    - y축 라벨 수정.
+    - 격자 수정.
+    - 헤더 디자인 수정.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Day1 (2025-06-12)
 
-## Expanding the ESLint configuration
+- ~~redux를 이용한 전역 상태 관리.~~
+- date picker 추가.
+    - ~~선택 날짜 상태 관리.~~
+    - ~~선택 주(week) 상태 관리.~~
+    - 이벤트 상태 관리.
+- 주별 보기 달력.
+    - ~~date picker에 고른 날짜에 따라 주별 달력 변경.~~
+    - 헤더 버튼 클릭시 주별 달력 변경.
+    - 이벤트 표시.
+    - 월별 보기 (optional)
+    - 달력 클릭 & 드래그로 이벤트 추가. (optional)
+- 모달.
+    - ~~모달 상태 관리.~~
+    - 좌측 버튼 클릭시 이벤트 추가(제목, 시간 입력).
+    - 주별 달력에 이벤트 클릭시 이벤트 수정(수정, 삭제).
+    - 반복 일정 (optional)
+    - 사용자 인터렉션에 따라 modal 생성 위치.
+- 구글 캘린더와 최대한 유사하게 디자인 (optional)
+    - y축 라벨 수정.
+    - 격자 수정.
+    - 헤더 디자인 수정.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Day2 (2025-06-13)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- ~~redux를 이용한 전역 상태 관리.~~
+- date picker 추가.
+    - ~~선택 날짜 상태 관리.~~
+    - ~~선택 주(week) 상태 관리.~~
+    - ~~이벤트 상태 관리.~~
+- 주별 보기 달력.
+    - ~~date picker에 고른 날짜에 따라 주별 달력 변경.~~
+    - 헤더 버튼 클릭시 주별 달력 변경.
+    - ~~이벤트 표시.~~
+    - 월별 보기 (optional)
+    - 달력 클릭 & 드래그로 이벤트 추가. (optional)
+- 모달.
+    - ~~모달 상태 관리.~~
+    - ~~좌측 버튼 클릭시 이벤트 추가(제목, 시간 입력).~~
+    - ~~주별 달력에 이벤트 클릭시 이벤트 수정(수정, 삭제).~~
+    - 반복 일정 (optional)
+    - 사용자 인터렉션에 따라 modal 생성 위치.
+- 구글 캘린더와 최대한 유사하게 디자인 (optional)
+    - y축 라벨 수정.
+    - 격자 수정.
+    - 헤더 디자인 수정.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Day3 (2025-06-14)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- ~~redux를 이용한 전역 상태 관리.~~
+- date picker 추가.
+    - ~~선택 날짜 상태 관리.~~
+    - ~~선택 주(week) 상태 관리.~~
+    - ~~이벤트 상태 관리.~~
+- 주별 보기 달력.
+    - ~~date picker에 고른 날짜에 따라 주별 달력 변경.~~
+    - ~~헤더 버튼 클릭시 주별 달력 변경.~~
+    - ~~이벤트 표시.~~
+    - 월별 보기 (optional)
+    - 달력 클릭 & 드래그로 이벤트 추가. (optional)
+- 모달.
+    - ~~모달 상태 관리.~~
+    - ~~좌측 버튼 클릭시 이벤트 추가(제목, 시간 입력).~~
+    - ~~주별 달력에 이벤트 클릭시 이벤트 수정(수정, 삭제).~~
+    - ~~반복 일정 (optional)~~
+    - 사용자 인터렉션에 따라 modal 생성 위치.
+- 구글 캘린더와 최대한 유사하게 디자인 (optional)
+    - ~~y축 라벨 수정.~~
+    - ~~격자 수정.~~
+    - ~~헤더 디자인 수정.~~
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Day4 (2025-06-15)
+
+추가 작업 내용
+- 중복 코드 커스텀 훅 분리.
+- 상수값 분리.
+- 주별 달력 클릭으로 이벤트 추가.
+- 이벤트 시작 시간이 종료 시간보다 항상 작게 제한.
