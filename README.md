@@ -1,5 +1,7 @@
 ### 작동 영상
 
+https://github.com/user-attachments/assets/1048f295-462a-4d4f-b758-b35281d2ac7e
+
 ### 실행 방법
 ```
 npm run dev
@@ -9,10 +11,13 @@ npm run dev
 
 **주별 달력 보기**
 
+
 - 좌측 DayPicker에 원하는 날짜를 클릭하여 통해 원하는 달력을 볼 수 있습니다.
 - 상단 헤더의 버튼을 통해 이전 주와 다음 주 달력을 확인할 수 있습니다.
 - 달력 상단에 오늘 날짜를 파란색으로 강조하여 오늘 날짜를 확인할 수 있습니다.
 - 상단 오늘 버튼을 통해 오늘 달력으로 이동할 수 있습니다.
+
+<img width="1192" alt="스크린샷 2025-06-15 오후 3 48 20" src="https://github.com/user-attachments/assets/01689afe-9e0c-485f-b4d7-f6942ee9dcfe" />
 
 **이벤트**
 
@@ -22,6 +27,8 @@ npm run dev
 - 이벤트를 클릭하여 수정(이름 변경 & 시간 변경 & 반복)할 수 있습니다.
 - 이벤트는 달력을 이동해도 해당 위치에 보입니다.
 - 이벤트 시작 시간과 종료 시간은 항상 `시작시간 < 종료시간` 입니다.
+
+![2025-06-153 53 30-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/e3b5c97f-9b8d-4147-b20c-5b3602acb58e)
 
 ### 사용 기술 스택 
 - TypeScript
