@@ -16,7 +16,7 @@ npm run dev
 - 달력 상단에 오늘 날짜를 파란색으로 강조하여 오늘 날짜를 확인할 수 있습니다.
 - 상단 오늘 버튼을 통해 오늘 달력으로 이동할 수 있습니다.
 
-<img width="800" height="450" alt="스크린샷 2025-06-15 오후 3 48 20" src="https://github.com/user-attachments/assets/01689afe-9e0c-485f-b4d7-f6942ee9dcfe" />
+<img width="800" alt="스크린샷 2025-06-15 오후 3 48 20" src="https://github.com/user-attachments/assets/01689afe-9e0c-485f-b4d7-f6942ee9dcfe" />
 
 **이벤트**
 
@@ -27,7 +27,7 @@ npm run dev
 - 이벤트는 달력을 이동해도 해당 위치에 보입니다.
 - 이벤트 시작 시간과 종료 시간은 항상 `시작시간 < 종료시간` 입니다.
 
-<img width="800" height="450" alt="이벤트 기능 시연" src="https://github.com/user-attachments/assets/e3b5c97f-9b8d-4147-b20c-5b3602acb58e" />
+<img width="800" alt="이벤트 기능 시연" src="https://github.com/user-attachments/assets/e3b5c97f-9b8d-4147-b20c-5b3602acb58e" />
 
 ### 사용 기술 스택 
 - TypeScript
