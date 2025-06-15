@@ -1,10 +1,13 @@
-import {useState, useEffect, useRef} from "react";
+import {useState} from "react";
 import {MyDatePicker} from "../MyCalendar.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../../redux/config/configStore.ts";
 import {ALERT_NO_TITLE, formatMonthDateDay, formatTime, hours} from "../../utills.ts";
 import {addEvent} from "../../redux/modules/event.ts";
 import {XMarkIcon} from "@heroicons/react/24/outline";
+import {useSelectTime} from "../../hooks/useSelectTime.ts";
+import {useModalInputRef} from "../../hooks/useModalInputRef.ts";
+import {useModalInput} from "../../hooks/useModalInput.ts";
 
 type Props = {
     handleClose: () => void
@@ -12,33 +15,22 @@ type Props = {
 };
 
 export const AddModal = (props: Props) => {
-    const [openCalendar, setOpenCalendar] = useState<boolean>(false);
-    const [startTimeToggle, setStartTimeToggle] = useState<boolean>(false);
-    const [endTimeToggle, setEndTimeToggle] = useState<boolean>(false);
     const [isRepeat, setIsRepeat] = useState<string | null>(null);
     const [title, setTitle] = useState<string>("");
-    const calendarRef = useRef<HTMLDivElement>(null);
-    const startTimeRef = useRef<HTMLDivElement>(null);
-    const endTimeRef = useRef<HTMLDivElement>(null);
+    const {calendarRef, startTimeRef, endTimeRef} = useModalInputRef()
+    const {openCalendar, setOpenCalendar,startTimeToggle, setStartTimeToggle,endTimeToggle, setEndTimeToggle} = useModalInput({calendarRef, startTimeRef, endTimeRef});
     const {selected} = useSelector((state: RootState) => state.calendar);
     const selectedDate = new Date(selected);
-    const [selectedStart, setSelectedStart] = useState<number>(selectedDate.getHours());
-    const [selectedEnd, setSelectedEnd] = useState<number>(selectedDate.getHours() + 1);
+    const {selectedStart, selectedEnd, handleStartTimeSelect, handleEndTimeSelect} = useSelectTime(selectedDate.getHours(), selectedDate.getHours() + 1);
     const dispatch = useDispatch();
 
-    const handleStartTimeSelect = (hour: number) => {
-        if (hour >= selectedEnd) {
-            setSelectedStart(hour);
-            setSelectedEnd(hour + 1);
-        }else setSelectedStart(hour);
+    const handleClickStart = (hour: number) => {
+        handleStartTimeSelect(hour)
         setStartTimeToggle(false);
     };
 
-    const handleEndTimeSelect = (hour: number) => {
-        if (hour <= selectedStart) {
-            setSelectedStart(hour - 1);
-            setSelectedEnd(hour);
-        } else setSelectedEnd(hour);
+    const handleClickEnd = (hour: number) => {
+        handleEndTimeSelect(hour);
         setEndTimeToggle(false);
     };
     const handleAddEvent = () => {
@@ -60,57 +52,9 @@ export const AddModal = (props: Props) => {
         props.handleClose();
 
         setTitle("");
-        setSelectedStart(props.nowHour);
-        setSelectedEnd(props.nowHour + 1);
+        handleStartTimeSelect(props.nowHour);
+        handleEndTimeSelect(props.nowHour + 1);
     };
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
-                setOpenCalendar(false);
-            }
-        };
-
-        if (openCalendar) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [openCalendar]);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (startTimeRef.current && !startTimeRef.current.contains(event.target as Node)) {
-                setStartTimeToggle(false);
-            }
-        };
-
-        if (startTimeToggle) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [startTimeToggle]);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (endTimeRef.current && !endTimeRef.current.contains(event.target as Node)) {
-                setEndTimeToggle(false);
-            }
-        };
-
-        if (endTimeToggle) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [endTimeToggle]);
 
     return (
         <div
@@ -169,7 +113,7 @@ export const AddModal = (props: Props) => {
                                             <div
                                                 key={hour}
                                                 className="px-4 py-2 hover:bg-gray-300 cursor-pointer text-center first:rounded-t-lg last:rounded-b-lg"
-                                                onClick={() => handleStartTimeSelect(hour)}
+                                                onClick={() => handleClickStart(hour)}
                                             >
                                                 {String(hour).padStart(2, '0')}:00
                                             </div>
@@ -195,7 +139,7 @@ export const AddModal = (props: Props) => {
                                             <div
                                                 key={hour}
                                                 className="px-4 py-2 hover:bg-gray-300 cursor-pointer text-center first:rounded-t-lg last:rounded-b-lg"
-                                                onClick={() => handleEndTimeSelect(hour)}
+                                                onClick={() => handleClickEnd(hour)}
                                             >
                                                 {String(hour).padStart(2, '0')}:00
                                             </div>
