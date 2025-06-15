@@ -29,12 +29,18 @@ export const UpdateModal = (props: Props) => {
     const dispatch = useDispatch();
 
     const handleStartTimeSelect = (hour: number) => {
-        setSelectedStart(hour);
+        if (hour >= selectedEnd) {
+            setSelectedStart(hour);
+            setSelectedEnd(hour + 1);
+        }else setSelectedStart(hour);
         setStartTimeToggle(false);
     };
 
     const handleEndTimeSelect = (hour: number) => {
-        setSelectedEnd(hour);
+        if (hour <= selectedStart) {
+            setSelectedStart(hour - 1);
+            setSelectedEnd(hour);
+        } else setSelectedEnd(hour);
         setEndTimeToggle(false);
     };
 

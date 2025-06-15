@@ -27,12 +27,18 @@ export const AddModal = (props: Props) => {
     const dispatch = useDispatch();
 
     const handleStartTimeSelect = (hour: number) => {
-        setSelectedStart(hour);
+        if (hour >= selectedEnd) {
+            setSelectedStart(hour);
+            setSelectedEnd(hour + 1);
+        }else setSelectedStart(hour);
         setStartTimeToggle(false);
     };
 
     const handleEndTimeSelect = (hour: number) => {
-        setSelectedEnd(hour);
+        if (hour <= selectedStart) {
+            setSelectedStart(hour - 1);
+            setSelectedEnd(hour);
+        } else setSelectedEnd(hour);
         setEndTimeToggle(false);
     };
     const handleAddEvent = () => {
@@ -138,7 +144,8 @@ export const AddModal = (props: Props) => {
                         </div>
 
                         {openCalendar && (
-                            <div className="absolute z-20 top-full left-0 mt-1 bg-white shadow-lg rounded-lg border border-gray-200">
+                            <div
+                                className="absolute z-20 top-full left-0 mt-1 bg-white shadow-lg rounded-lg border border-gray-200">
                                 <MyDatePicker/>
                             </div>
                         )}
@@ -157,7 +164,7 @@ export const AddModal = (props: Props) => {
                                     className="absolute z-10 top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto"
                                 >
                                     {hours
-                                        .filter(hour => hour <= 24)
+                                        .filter(hour => hour < 24)
                                         .map((hour) => (
                                             <div
                                                 key={hour}
@@ -184,7 +191,6 @@ export const AddModal = (props: Props) => {
                                     className="absolute z-10 top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto"
                                 >
                                     {hours
-                                        .filter(hour => hour <= 24)
                                         .map((hour) => (
                                             <div
                                                 key={hour}
